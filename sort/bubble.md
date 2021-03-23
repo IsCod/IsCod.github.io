@@ -50,7 +50,7 @@
 
 ### 代码实现
 
-package main
+Goland: 
 ```goland
 package main
 
@@ -74,3 +74,18 @@ func main() {
 }
 ```
 输出： `[6 7 10 11 21]`
+
+PHP
+
+```php
+<?php
+function bubble_sort(array $arr) : array {
+	return $arr;
+}
+
+$arr = [10, 6, 11, 21, 7];
+
+$x = bubble_sort($arr);
+print_r($x);
+
+```

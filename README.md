@@ -29,9 +29,9 @@
   * [REDIS](nosql/REDIS.md)
 * SQL
   * [MySql](sql/mysql.md)
+  * [MyCat](sql/mycat.md)
 * 杂项 
   * [AJAX](TO/AJAX.md)
-  * [算法](TO/算法.md)
   * [数据架构](TO/数据架构.md)
   * [错误处理](TO/错误处理.md)
 * 哲学

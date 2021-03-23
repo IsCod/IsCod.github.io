@@ -2,12 +2,11 @@
 
 # IsCod
 
-## Who is me
+## Who is me ?
 
-* 这是什么?
-* 有什么特点？
-
-传送门：[Github.iscod][github_iscod]，[Lofter.isocd][lofter_iscod]，[Blog.iscod][blog_iscod]
+[Github.iscod][github_iscod]
+[Lofter.isocd][lofter_iscod]
+[Blog.iscod][blog_iscod]
 
 * 数据结构及算法
   * [链表](data_struct/list.md)

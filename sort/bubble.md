@@ -56,7 +56,7 @@ package main
 
 import "fmt"
 
-func Sort(arr []int) []int {
+func bubbleSort(arr []int) []int {
 	for i := len(arr) - 1; i > 0; i-- {
 		for j := 0; j < i; j++ {
 			if arr[j] > arr[j+1] {
@@ -69,8 +69,8 @@ func Sort(arr []int) []int {
 
 func main() {
 	var arr = []int{10, 6, 11, 21, 7}
-	sArr := Sort(arr)
-	fmt.Printf("%d", sArr)
+	sArr := bubbleSort(arr)
+	fmt.Prinf("%d", sArr)
 }
 ```
 

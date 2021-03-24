@@ -44,11 +44,41 @@
 
 Goland: 
 ```goland
+package main
+
+import "fmt"
+
+func insertSort(arr []int) []int {
+	for k, _ := range arr {
+		if k == 0 {
+			continue
+		}
+		for i, v := range arr[0:k] {
+			if v > arr[k] {
+				arr[i], arr[k] = arr[k], arr[i]
+			}
+		}
+	}
+	return arr
+}
+
+func main() {
+	var arr = []int{10, 6, 11, 100, 21, 7, 4, 89, 70, 10}
+	sArr := insertSort(arr)
+	fmt.Printf("%d", sArr)
+}
 ```
+
+输出： 
+```[4 6 7 10 10 11 21 70 89 100]```
 
 PHP: 
 ```php
 ```
+
+输出： 
+```[4 6 7 10 10 11 21 70 89 100]```
+
 * 参考
     * [数据结构和算法](https://www.bookstack.cn/read/JS-Sorting-Algorithm/3.insertionSort.md)
     * [经典排序算法](https://www.bookstack.cn/read/hunterhug-goa.c/algorithm-sort-insert_sort.md)

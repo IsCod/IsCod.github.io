@@ -14,7 +14,7 @@
   * [字典](data_struct/dict.md)
 * 算法
   * [冒泡排序](sort/bubble.md)
-  * [插入排序](sort/install.md)
+  * [插入排序](sort/insert.md)
   * [计数/桶排序](sort/count.md)
   * [快速排序](sort/quick.md)
 * 数据序列化协议

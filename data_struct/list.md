@@ -29,8 +29,10 @@ typedef struct list {
 
 GoLand实现链表：
 
-```goland
+```golnd
 package main
+
+import "fmt"
 
 type linkNode struct {
 	Prev, Next *linkNode

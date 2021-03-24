@@ -111,5 +111,5 @@ Array
 ```
 
 * 参考
-    * [数据结构和算法](https://www.bookstack.cn/read/JS-Sorting-Algorithm/3.insertionSort.md)
-    * [经典排序算法](https://www.bookstack.cn/read/hunterhug-goa.c/algorithm-sort-insert_sort.md)
+    * [数据结构和算法](https://www.bookstack.cn/read/hunterhug-goa.c/algorithm-sort-bubble_sort.md)
+    * [经典排序算法](https://www.bookstack.cn/read/JS-Sorting-Algorithm/1.bubbleSort.md)

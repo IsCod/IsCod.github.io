@@ -5,9 +5,10 @@
 ### 链表和链表节点实现
 
 常用链表节点结构包含指向上一个(prev)和下一个节点(next)的指针，和该节点值的value
-链表结构一般包含头部(head)，末尾(tail)两个节点指针和链表长度(len)
 
-我们先看Redis中的链表实现
+链表结构一般包含头部节点(head)，末尾节点(tail)的指针和链表长度(len)
+
+我们先看Redis中的链表结构(src/adlist.h)：
 
 ```c
 typedef struct listNode {

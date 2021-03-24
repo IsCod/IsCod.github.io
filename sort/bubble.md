@@ -73,19 +73,39 @@ func main() {
 	fmt.Printf("%d", sArr)
 }
 ```
-输出： `[6 7 10 11 21]`
+
+输出： 
+```[6 7 10 11 21]```
 
 PHP
 
 ```php
-<?php
-function bubble_sort(array $arr) : array {
-	return $arr;
+function bubble_sort(array $arr): array
+{
+    for ($i = count($arr) - 1; $i > 0; $i--) {
+        for ($j = 0; $j < $i; $j++) {
+            if ($arr[$j] > $arr[$j + 1]) {
+                $val = $arr[$j + 1];
+                $arr[$j + 1] = $arr[$j];
+                $arr[$j] = $val;
+            }
+        }
+    }
+    return $arr;
 }
 
-$arr = [10, 6, 11, 21, 7];
+$arr = bubble_sort([10, 6, 11, 21, 7]);
+print_r($arr);
+```
 
-$x = bubble_sort($arr);
-print_r($x);
-
+输出： 
+```
+Array
+(
+    [0] => 6
+    [1] => 7
+    [2] => 10
+    [3] => 11
+    [4] => 21
+)
 ```

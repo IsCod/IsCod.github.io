@@ -74,6 +74,26 @@ func main() {
 
 PHP: 
 ```php
+function insert_sort(array $arr): array
+{
+    foreach ($arr as $key => $value) {
+        if ($key == 0) {
+            continue;
+        }
+
+        for ($i = 0; $i < $key; $i++) {
+            if ($arr[$i] > $value) {
+                $kValue = $arr[$key];
+                $arr[$key] = $arr[$i];
+                $arr[$i] = $kValue;
+            }
+        }
+    }
+    return $arr;
+}
+
+$arr = insert_sort([10, 6, 11, 100, 21, 7, 4, 89, 70, 10]);
+print_r($arr);
 ```
 
 输出： 

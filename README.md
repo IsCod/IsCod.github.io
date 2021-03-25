@@ -26,7 +26,7 @@
   * [HTTP协议](http/HTTP协议.md)
 
 * NoSql
-  * [REDIS](nosql/REDIS.md)
+  * [REDIS](nosql/redis.md)
 * SQL
   * [MySql](sql/mysql.md)
   * [MyCat](sql/mycat.md)

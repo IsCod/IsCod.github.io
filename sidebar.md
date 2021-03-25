@@ -11,7 +11,7 @@
     * [JSON](data_marshal/JSON.md)
     * [Protobuf](data_marshal/protobuf.md)
     * [Xml](data_marshal/xml.md)
-*  Devops
+* Devops
     * [Jenkins](devops/jenkins.md)
     * [walle](devops/walle.md)
 * HTTP

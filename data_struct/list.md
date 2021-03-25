@@ -46,7 +46,7 @@ typedef struct list {
 
 我们用GoLand实现类似Redis链表：
 
-```golnd
+```goland
 package main
 
 import "fmt"

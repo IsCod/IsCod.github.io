@@ -15,7 +15,7 @@
   * [HTTP安全](http/HTTP安全.md)
   * [HTTP协议](http/HTTP协议.md)
 * NoSql
-  * [REDIS](nosql/REDIS.md)
+  * [REDIS](nosql/redis.md)
 * SQL
   * [MySql](sql/mysql.md)
 * 杂项 

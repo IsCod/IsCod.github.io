@@ -6,6 +6,48 @@ Jenkins 流水线 (或简单的带有大写"P"的"Pipeline") 是一套插件，�
 
 Jenkins 流水线的定义可以到一个文件中 ( Jenkinsfile)保存到源代码的版本控制库中
 
+## 代理(agent)
+
+agent 指定了整个流水线或特定的部分, 将会在Jenkins环境中执行的位置，这取决于 agent 区域的位置。该部分必须在 pipeline 块的顶层被定义, 但是 stage 级别的使用是可选的。
+
+#### 参数
+`none`
+当在 pipeline 块的顶部没有全局代理，该参数将会被分配到整个流水线的运行中并且每个 stage 部分`都需要包含他自己的 agent 部分`。比如: agent none
+
+`any`
+
+`docker`
+
+使用给定的容器执行流水线或阶段
+```
+stage('Build') {
+    agent {
+        docker {
+            image 'golang'
+        }
+    }
+    steps {
+        sh 'go version'
+    }
+}
+```
+
+`dockerfile`
+
+使用从源代码库包含的 Dockerfile 构建的容器
+
+```
+agent {
+    // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
+    dockerfile {
+        filename 'Dockerfile'
+        dir 'build'
+        additionalBuildArgs  '--build-arg version=1.0.2'
+    }
+}
+```
+
+
 ## 示例
 ```jenkins
 pipeline {

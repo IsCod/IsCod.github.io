@@ -51,6 +51,13 @@ agent {
 }
 ```
 
+## stages
+
+包含一系列一个或多个 stage 指令, stages 部分是流水线描述的大部分"work" 的位置。 建议 stages 至少包含一个 stage 指令用于连续交付过程的每个离散部分,比如构建, 测试, 和部署。
+
+## steps
+
+steps 部分在给定的 stage 指令中执行的定义了一系列的一个或多个steps。
 
 ## 示例
 ```jenkins

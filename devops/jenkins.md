@@ -4,7 +4,7 @@
 
 Jenkins 流水线 (或简单的带有大写"P"的"Pipeline") 是一套插件，它支持实现和集成 continuous delivery pipelines 到Jenkins。
 
-Jenkins 流水线的定义可以到一个文件中 ( Jenkinsfile)保存到源代码的版本控制库中
+Jenkins 流水线的定义可以到一个文件中 (Jenkinsfile)保存到源代码的版本控制库中
 
 ## 代理(agent)
 
@@ -12,13 +12,17 @@ agent 指定了整个流水线或特定的部分, 将会在Jenkins环境中执�
 
 #### 参数
 `none`
-当在 pipeline 块的顶部没有全局代理，该参数将会被分配到整个流水线的运行中并且每个 stage 部分`都需要包含他自己的 agent 部分`。比如: agent none
+
+如果在 pipeline 块的顶部设置该参数(既没有全局代理)，该参数将会被分配到整个流水线的运行中，则每个 stage 部分`都需要包含他自己的 agent` 部分。比如: agent any
 
 `any`
 
+在任何可用的代理上执行流水线或阶段。例如: agent any
+
 `docker`
 
-使用给定的容器执行流水线或阶段
+使用给定的容器内执行流水线或阶段
+
 ```
 stage('Build') {
     agent {

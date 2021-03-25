@@ -54,7 +54,7 @@
 ### 代码实现
 
 Goland: 
-```goland
+```go
 package main
 
 import "fmt"

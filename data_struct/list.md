@@ -44,9 +44,9 @@ typedef struct list {
 } list;
 ```
 
-我们用GoLand实现类似Redis链表：
+我们用Golang实现类似Redis链表：
 
-```goland
+```go
 package main
 
 import "fmt"

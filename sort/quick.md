@@ -52,7 +52,7 @@
 
 ## 代码实现
 
-Goland: 
+Golang: 
 ```go
 package main
 

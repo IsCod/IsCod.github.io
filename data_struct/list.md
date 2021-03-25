@@ -100,4 +100,4 @@ func main() {
 ```
 * 参考
     * [redis设计与实现](https://www.bookstack.cn/read/redisbook/f8fc3415f3c66c78.md)
-    * [数据结构(goland)](https://www.bookstack.cn/read/hunterhug-goa.c/algorithm-link.md)
+    * [数据结构(golang)](https://www.bookstack.cn/read/hunterhug-goa.c/algorithm-link.md)

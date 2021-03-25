@@ -12,15 +12,28 @@
 
 链表结构一般包含头部节点(head)，末尾节点(tail)的指针和链表长度(len)
 
-我们先看Redis中的链表结构(src/adlist.h)：
+链表一般分为`单链表` `双链表` `循环链表`这些链表都是一个数据指向另外一个数据的结构只是链表节点的指向不同
+
+- `单链表`
+    单链表，就是链表是单向的，每个节点只有一个方向不能往回找
+- `双端链表`
+    顾名思义，就是每个节点可以找到它之前的节点和之后的，节点是双向的
+- `循环链表`
+    循环链表，就是它可以一直向下，最后回到自己的那个节点，形成了一个回路。循环链表分为单链表和双链表，既一个是只能顺着一个方向走，另外一个是两个方向走
+
+#### Redis中的链表结构:
+
+redis中的链表是双端链表，链表节点带有前置(prev)和后置节点(next)两个指针
 
 ```c
+//链表节点
 typedef struct listNode {
     struct listNode *prev;
     struct listNode *next;
     void *value;
 } listNode;
 
+//链表
 typedef struct list {
     listNode *head;
     listNode *tail;

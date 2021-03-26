@@ -106,7 +106,7 @@ func (t *Tree) Add(value interface{}) {
 }
 ```
 
-### 二叉查找树
+## 二叉查找树
 
 ```go
 package main

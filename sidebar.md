@@ -2,6 +2,7 @@
   * [链表](data_struct/list.md)
   * [栈和队列](data_struct/stack_queue.md)
   * [字典](data_struct/dict.md)
+  * [树](data_struct/tree.md)
 * 算法
   * [冒泡排序](sort/bubble.md)
   * [插入排序](sort/insert.md)

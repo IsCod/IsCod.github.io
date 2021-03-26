@@ -15,7 +15,7 @@
 
 ## 二叉树
 
-二叉树节点结构:
+### 二叉树节点
 
 ```go
 type treeNode struct {
@@ -23,6 +23,33 @@ type treeNode struct {
 	Times       int64
 	Left, Right *treeNode
 	Lock sync.Mutex
+}
+```
+
+### 二叉查找树
+
+二叉树查找是有特定规律的二叉树，具有以下特点
+
+    1.它是一个二叉树，或者空树
+    2.它的左子树节点值都小于它的父节点，右子树所有节点的值都大于的父节点值
+    3.左右子树也是一个二叉树
+
+以上特点可以保证二叉树一直向左查找可以找到最小的元素，一直向右可以找到最大元素
+
+```go
+type SearchTree struct {
+	Root *SearchTreeNode
+}
+
+type SearchTreeNode struct {
+	Value       interface{}
+	Times       int64
+	Left, Right *SearchTreeNode
+	Lock sync.Mutex
+}
+
+func NewSearchTree() *SearchTree {
+    return new(SearchTree)
 }
 ```
 

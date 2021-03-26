@@ -55,6 +55,8 @@ func NewSearchTree() *SearchTree {
 
 ## 代码实现
 
+### 二叉树
+
 ```go
 package main
 
@@ -101,6 +103,31 @@ func (t *Tree) Add(value interface{}) {
 	} else {
 		t.Root.Add(value)
 	}
+}
+```
+
+### 二叉查找树
+
+```go
+package main
+
+import (
+	"sync"
+)
+
+type SearchTree struct {
+	Root *SearchTreeNode
+}
+
+type SearchTreeNode struct {
+	Value       interface{}
+	Times       int64
+	Left, Right *SearchTreeNode
+	Lock sync.Mutex
+}
+
+func NewSearchTree() *SearchTree {
+    return new(SearchTree)
 }
 ```
 

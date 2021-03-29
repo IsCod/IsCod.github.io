@@ -151,3 +151,21 @@ typedef struct zskiplistNode {
 
 ## 内存回收
 
+## 集群
+
+Redis集群是由多个redis节点组成的数据共享的程序集（最少三个节点）
+
+### 数据分片
+
+Redis集群没有使用一致性hash，而是使用哈希槽的该概念。
+
+Redis 集群有16384个哈希槽,每个key通过CRC16校验后对16384取模来决定放置哪个槽.集群的每个节点负责一部分hash槽,举个例子,比如当前集群有3个节点,那么:
+
+节点 A 包含 0 到 5500号哈希槽.
+节点 B 包含5501 到 11000 号哈希槽.
+节点 C 包含11001 到 16384号哈希槽.
+
+* 参考
+    * [Redis集群](http://www.redis.cn/topics/cluster-tutorial)
+    * [Redis设计与实现](https://www.bookstack.cn/read/redisbook/2d294542c86f1acf.md)
+

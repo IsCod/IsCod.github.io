@@ -31,19 +31,13 @@ struct __attribute__ ((__packed__)) sdshdr8 {
 
 `src/adlist.h`文件定义了`listNode`和`list`结构：
 
-`listNode`结构:
-
 ```c
 typedef struct listNode {
     struct listNode *prev;
     struct listNode *next;
     void *value;
 } listNode;
-```
 
-`list`结构:
-
-```c
 typedef struct list {
     listNode *head;
     listNode *tail;
@@ -72,10 +66,7 @@ typedef struct dictht {
     unsigned long sizemask;
     unsigned long used;
 } dictht;
-```
 
-`dictEntry`结构:
-```c
 //哈希节点
 typedef struct dictEntry {
     void *key;
@@ -87,11 +78,8 @@ typedef struct dictEntry {
     } v;
     struct dictEntry *next;
 } dictEntry;
-```
 
-`dict`结构:
-
-```c
+//字典
 typedef struct dict {
     dictType *type;
     void *privdata;
@@ -112,34 +100,21 @@ typedef struct dict {
 
 ```c
 typedef struct zskiplist {
-    struct zskiplistNode *header, *tail;
-    unsigned long length;
-    int level;
+    struct zskiplistNode *header, *tail;//记录跳跃表表头节点和尾节点
+    unsigned long length;//记录跳跃表长度, 既跳跃表节点数量
+    int level;//记录跳跃表内, 层数最大的节点层数
 } zskiplist;
-```
 
-* `header` `tail`记录跳跃表表头节点和尾节点
-* `length`记录跳跃表长度, 既跳跃表节点数量
-* `level`记录跳跃表内, 层数最大的节点层数
-
-`zskiplistNode`结构:
-
-```c
 typedef struct zskiplistNode {
     sds ele;
-    double score;
-    struct zskiplistNode *backward;
+    double score;//分值
+    struct zskiplistNode *backward;//后退指针
     struct zskiplistLevel {
         struct zskiplistNode *forward;//前进指针
         unsigned long span;//层的跨度
-    } level[];
+    } level[];//层
 } zskiplistNode;
 ```
-
-* `level[]`层
-* `backward`后退指针
-* `score`分值
-
 ### 整数集合
 ### 压缩列表
 

@@ -145,7 +145,80 @@ typedef struct zskiplistNode {
 
 Redis通过上述章节里介绍的数据结构，构建一个对象系统，包括`字符串` `列表` `哈希` `集合` `有序集合` 这五类对象，每一种对象都至少使用了一种数据结构来实现
 
-可以通过`OBJECT ENCODING`命令查看对象`key`的底层数据结构
+在`src/server.h`文件可以看到`redisObject`结构:
+
+```c
+typedef struct redisObject {
+    unsigned type:4;
+    unsigned encoding:4;
+    unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or
+                            * LFU data (least significant 8 bits frequency
+                            * and most significant 16 bits access time). */
+    int refcount;//引用计数
+    void *ptr;//指向底层实现数据结构的指针
+} robj;
+```
+
+### type 记录了对象的类型
+
+type 记录了对象的类型: 
+
+在`src/server.h`文件定义了`encoding`编码类型:
+
+```c
+/* The actual Redis Object */
+#define OBJ_STRING 0    /* String object. */
+#define OBJ_LIST 1      /* List object. */
+#define OBJ_SET 2       /* Set object. */
+#define OBJ_ZSET 3      /* Sorted set object. */
+#define OBJ_HASH 4      /* Hash object. */
+```
+
+可以通过redis命令`TYPE`查看对象`key`的类型
+
+```sh
+127.0.0.1:6379[1]> TYPE A
+string
+```
+
+#### encoding
+
+encoding 记录了对象所使用的底层编码既上述章节介绍数据结构， 如 `embstr` `ziplist` `intset`
+
+在`src/server.h`文件定义了`encoding`编码类型:
+
+```c
+/* Objects encoding. Some kind of objects like Strings and Hashes can be
+ * internally represented in multiple ways. The 'encoding' field of the object
+ * is set to one of this fields for this object. */
+#define OBJ_ENCODING_RAW 0     /* Raw representation */
+#define OBJ_ENCODING_INT 1     /* Encoded as integer */
+#define OBJ_ENCODING_HT 2      /* Encoded as hash table */
+#define OBJ_ENCODING_ZIPMAP 3  /* Encoded as zipmap */
+#define OBJ_ENCODING_LINKEDLIST 4 /* No longer used: old list encoding. */
+#define OBJ_ENCODING_ZIPLIST 5 /* Encoded as ziplist */
+#define OBJ_ENCODING_INTSET 6  /* Encoded as intset */
+#define OBJ_ENCODING_SKIPLIST 7  /* Encoded as skiplist */
+#define OBJ_ENCODING_EMBSTR 8  /* Embedded sds string encoding */
+#define OBJ_ENCODING_QUICKLIST 9 /* Encoded as linked list of ziplists */
+#define OBJ_ENCODING_STREAM 10 /* Encoded as a radix tree of listpacks */
+```
+
+#### lru
+
+lru 记录了对象最后一次被程序访问的时间
+
+可以通过redis命令`OBJECT IDLETIME`查看对象`key`的空转时长，既当前的时间减去`lru`的时间
+
+```sh
+127.0.0.1:6379[1]> OBJECT IDLETIME A
+(integer) 604
+```
+
+
+
+
+同时可通过`OBJECT ENCODING`命令查看对象`key`的底层数据结构
 
 ```sh
 127.0.0.1:6379[1]> OBJECT ENCODING user_score_rank
@@ -156,6 +229,8 @@ OK
 "embstr"
 ```
 
+
+
 ### 字符串对象
 ### 列表对象
 ### 哈希对象
@@ -164,14 +239,7 @@ OK
 
 ## 内存回收
 
-由于C语言没有自动内存回收功能，所以redis在自身的对象系统中构建了`应用计数(refcount)`来实现内存的回收机制，通过`refcount`可以跟踪对象的引用计数信息，在适当的时机自动释放内存并进行内存回收。
-
-对象的引用计数会随着对象的使用状态而不断变化
-
-    * 创建对象时，引用计数会被初始化为 1
-    * 对象没一个程序使用时，引用计数会被增加 1
-    * 对象不被一个程序使用时，引用计数会被减 1
-    * 对象的引用计数变为 0 时，对象所占用内存会被释放
+由于C语言不具备自动内存回收功能，所以`redis`在自身的对象系统中构建了`应用计数(refcount)`来实现内存的回收机制，通过`refcount`记录跟踪对象的引用计数，实现在适当时机的自动释放对象和内存回收。
 
 在`src/server.h`文件可以看到`redisObject`结构:
 
@@ -187,16 +255,20 @@ typedef struct redisObject {
 } robj;
 ```
 
-我们可以通过redis命令`OBJECT REFCOUNT`查看对象的引用计数
+`应用计数(refcount)`会随着对象的使用状态而不断变化
+
+    创建对象时，引用计数会被初始化为 1
+    对象没一个程序使用时，引用计数会被增加 1
+    对象不被一个程序使用时，引用计数会被减 1
+    对象的引用计数变为 0 时，对象所占用内存会被释放
+
+通过redis命令`OBJECT REFCOUNT`可以查看对象的引用计数
 
 ```sh
-127.0.0.1:6379> DEL A
-(integer) 1
-127.0.0.1:6379> OBJECT REFCOUNT A
-(nil)
 127.0.0.1:6379> set A iscod
 OK
 127.0.0.1:6379> OBJECT REFCOUNT A
+(integer) 1
 ```
 
 ### 对象共享

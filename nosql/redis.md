@@ -201,10 +201,24 @@ lru 记录了对象最后一次被程序访问的时间
 ```
 
 ### 字符串对象
+
+字符串对象的编码对象可以是`int` `emstr` `raw` 
+
 ### 列表对象
+
+列表对象的编码对象可以是`ziplist` `linkedlist`
+
 ### 哈希对象
+
+列表对象的编码对象可以是`ziplist` `hashtable`
+
 ### 集合对象
+
+列表对象的编码对象可以是`intset` `hashtable`
+
 ### 有序集合对象
+
+有序集合对象的编码对象可以是`ziplist` `skiplist`
 
 ## 内存回收
 
@@ -219,7 +233,7 @@ typedef struct redisObject {
     unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or
                             * LFU data (least significant 8 bits frequency
                             * and most significant 16 bits access time). */
-    int refcount;
+    int refcount;//引用计数
     void *ptr;
 } robj;
 ```

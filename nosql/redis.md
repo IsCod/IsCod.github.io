@@ -143,6 +143,19 @@ typedef struct zskiplistNode {
 
 ## 对象
 
+Redis通过上述章节里介绍的数据结构，构建一个对象系统，包括`字符串` `列表` `哈希` `集合` `有序集合` 这五类对象，每一种对象都至少使用了一种数据结构来实现
+
+可以通过`OBJECT ENCODING`命令查看对象`key`的底层数据结构
+
+```sh
+127.0.0.1:6379[1]> OBJECT ENCODING user_score_rank
+"ziplist"
+127.0.0.1:6379[1]> set A string
+OK
+127.0.0.1:6379[1]> OBJECT ENCODING A
+"embstr"
+```
+
 ### 字符串对象
 ### 列表对象
 ### 哈希对象
@@ -150,6 +163,68 @@ typedef struct zskiplistNode {
 ### 有序集合对象
 
 ## 内存回收
+
+由于C语言没有自动内存回收功能，所以redis在自身的对象系统中构建了`应用计数(refcount)`来实现内存的回收机制，通过`refcount`可以跟踪对象的引用计数信息，在适当的时机自动释放内存并进行内存回收。
+
+对象的引用计数会随着对象的使用状态而不断变化
+
+    * 创建对象时，引用计数会被初始化为 1
+    * 对象没一个程序使用时，引用计数会被增加 1
+    * 对象不被一个程序使用时，引用计数会被减 1
+    * 对象的引用计数变为 0 时，对象所占用内存会被释放
+
+在`src/server.h`文件可以看到`redisObject`结构:
+
+```c
+typedef struct redisObject {
+    unsigned type:4;
+    unsigned encoding:4;
+    unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or
+                            * LFU data (least significant 8 bits frequency
+                            * and most significant 16 bits access time). */
+    int refcount;
+    void *ptr;
+} robj;
+```
+
+我们可以通过redis命令`OBJECT REFCOUNT`查看对象的引用计数
+
+```sh
+127.0.0.1:6379> DEL A
+(integer) 1
+127.0.0.1:6379> OBJECT REFCOUNT A
+(nil)
+127.0.0.1:6379> set A iscod
+OK
+127.0.0.1:6379> OBJECT REFCOUNT A
+```
+
+### 对象共享
+
+Redis在内存处理上除了`refcount`引用计数之外，还设计了对象共存
+
+Redis在初始化服务器时，创建了一万个字符串对象，这些对象包含了从 0 到 9999 的所有整数值，当有其它程序或对象需要使用到这些字符串对象时，服务器就会共享这些对象，而不是新创建对象。
+
+共享字符串的对象数量由`server.h`中`OBJ_SHARED_INTEGERS`指定
+
+```c
+#define OBJ_SHARED_INTEGERS 10000
+```
+
+如以下例子：
+
+```sh
+127.0.0.1:6379[1]> set A 1
+OK
+127.0.0.1:6379[1]> OBJECT REFCOUNT A
+(integer) 2147483647
+127.0.0.1:6379[1]> set A 100001
+OK
+127.0.0.1:6379[1]> OBJECT REFCOUNT A
+(integer) 1
+```
+
+对象`A` 的键值为 `1`时, `A`的对象引用计数是 `1`。当A的键值设置 `100001` 时，引用计数为 `1`
 
 ## 集群
 

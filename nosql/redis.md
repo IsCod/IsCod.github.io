@@ -10,7 +10,7 @@ Redis包含了六个主要的底层数据结构：`动态字符串` `链表` `�
 
 ### 动态字符串
 
-动态字符串在`src/sds.h` 定义：
+`src/sds.h`文件定义了`sds`结构：
 
 ```c
 struct __attribute__ ((__packed__)) sdshdr8 {
@@ -29,9 +29,9 @@ struct __attribute__ ((__packed__)) sdshdr8 {
 
 链表应用于`列表键`，在`列表键`元素数量比较多，或者元素成员是比较长的字符串时，Redis会使用`链表(list)`作为`列表键`的底层实现
 
-链表由`listNode`和`list`机构在`src/adlist.h` 定义：
+`src/adlist.h`文件定义了`listNode`和`list`结构：
 
-`listNode`结构如下:
+`listNode`结构:
 
 ```c
 typedef struct listNode {
@@ -41,7 +41,7 @@ typedef struct listNode {
 } listNode;
 ```
 
-`list`结构如下:
+`list`结构:
 
 ```c
 typedef struct list {
@@ -61,7 +61,9 @@ typedef struct list {
 
 Redis中的字典使用哈希表作为底层实现，一个哈希表包含多个哈希节点，每个哈希表节点就保存了字典中的一个键值对。
 
-`dictht`结构如下:
+`src/dict.h`文件定义了`dictht`、`dictEntry`、`dict`结构：
+
+`dictht`结构:
 ```c
 //哈希表
 typedef struct dictht {
@@ -72,7 +74,7 @@ typedef struct dictht {
 } dictht;
 ```
 
-`dictEntry`结构如下:
+`dictEntry`结构:
 ```c
 //哈希节点
 typedef struct dictEntry {
@@ -87,7 +89,7 @@ typedef struct dictEntry {
 } dictEntry;
 ```
 
-`dict`结构如下:
+`dict`结构:
 
 ```c
 typedef struct dict {
@@ -104,9 +106,9 @@ typedef struct dict {
 `跳跃表(zskiplist)`是一个有序数据结构, 它通过维持多个指向其他节点的指针，从而达到快速访问节点的目的。
 `跳跃表(zskiplist)`应用于`有序集合`，在有序集合元素数量比较多，或者元素成员是比较长的字符串时，Redis会使用`跳跃表(zskiplist)`作为`有序集合键`的底层实现
 
-跳跃表`zskiplistNode`和`zskiplist`两个结构在`src/server.h`文件中定义：
+`src/server.h`文件定义了`zskiplistNode`和`zskiplist`两个结构：
 
-`zskiplist`结构如下:
+`zskiplist`结构:
 
 ```c
 typedef struct zskiplist {
@@ -120,7 +122,7 @@ typedef struct zskiplist {
 * `length`记录跳跃表长度, 既跳跃表节点数量
 * `level`记录跳跃表内, 层数最大的节点层数
 
-`zskiplistNode`结构如下:
+`zskiplistNode`结构:
 
 ```c
 typedef struct zskiplistNode {
@@ -145,12 +147,12 @@ typedef struct zskiplistNode {
 
 Redis通过上述章节里介绍的数据结构，构建一个对象系统，包括`字符串` `列表` `哈希` `集合` `有序集合` 这五类对象，每一种对象都至少使用了一种数据结构来实现
 
-在`src/server.h`文件可以看到`redisObject`结构:
+`src/server.h`文件定义了`redisObject`结构:
 
 ```c
 typedef struct redisObject {
-    unsigned type:4;
-    unsigned encoding:4;
+    unsigned type:4;//对象类型
+    unsigned encoding:4;//编码
     unsigned lru:LRU_BITS; /* LRU time (relative to global lru_clock) or
                             * LFU data (least significant 8 bits frequency
                             * and most significant 16 bits access time). */
@@ -161,9 +163,7 @@ typedef struct redisObject {
 
 ### type 记录了对象的类型
 
-type 记录了对象的类型: 
-
-在`src/server.h`文件定义了`encoding`编码类型:
+`src/server.h`文件定义了`encoding`编码类型:
 
 ```c
 /* The actual Redis Object */
@@ -174,18 +174,16 @@ type 记录了对象的类型:
 #define OBJ_HASH 4      /* Hash object. */
 ```
 
-可以通过redis命令`TYPE`查看对象`key`的类型
+可通过redis命令`TYPE`查看对象`key`的类型
 
 ```sh
 127.0.0.1:6379[1]> TYPE A
 string
 ```
 
-#### encoding
+#### encoding 记录了对象所使用的底层编码
 
-encoding 记录了对象所使用的底层编码既上述章节介绍数据结构， 如 `embstr` `ziplist` `intset`
-
-在`src/server.h`文件定义了`encoding`编码类型:
+`src/server.h`文件定义了`encoding`编码类型:
 
 ```c
 /* Objects encoding. Some kind of objects like Strings and Hashes can be
@@ -204,21 +202,7 @@ encoding 记录了对象所使用的底层编码既上述章节介绍数据结�
 #define OBJ_ENCODING_STREAM 10 /* Encoded as a radix tree of listpacks */
 ```
 
-#### lru
-
-lru 记录了对象最后一次被程序访问的时间
-
-可以通过redis命令`OBJECT IDLETIME`查看对象`key`的空转时长，既当前的时间减去`lru`的时间
-
-```sh
-127.0.0.1:6379[1]> OBJECT IDLETIME A
-(integer) 604
-```
-
-
-
-
-同时可通过`OBJECT ENCODING`命令查看对象`key`的底层数据结构
+可通过redis命令`OBJECT ENCODING`命令查看对象`key`的底层数据结构
 
 ```sh
 127.0.0.1:6379[1]> OBJECT ENCODING user_score_rank
@@ -228,6 +212,21 @@ OK
 127.0.0.1:6379[1]> OBJECT ENCODING A
 "embstr"
 ```
+
+
+#### lru
+
+lru 记录了对象最后一次被程序访问的时间
+
+可通过redis命令`OBJECT IDLETIME`查看对象`key`的空转时长，既当前的时间减去`lru`的时间
+
+```sh
+127.0.0.1:6379[1]> OBJECT IDLETIME A
+(integer) 604
+```
+
+
+
 
 
 

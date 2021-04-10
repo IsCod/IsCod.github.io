@@ -116,11 +116,12 @@ typedef struct zskiplistNode {
 } zskiplistNode;
 ```
 ### 整数集合
+
 ### 压缩列表
 
 ## 对象
 
-Redis通过上述章节里介绍的数据结构，构建一个对象系统，包括`字符串` `列表` `哈希` `集合` `有序集合` 这五类对象，每一种对象都至少使用了一种数据结构来实现
+Redis通过上述章节中介绍的底层数据结构，构建一个对象系统实现键值对数据库供用户使用，包括`字符串` `列表` `哈希` `集合` `有序集合` 这五类对象，每一种对象都至少使用了一种数据结构来实现
 
 `src/server.h`文件定义了`redisObject`结构:
 
@@ -136,9 +137,9 @@ typedef struct redisObject {
 } robj;
 ```
 
-### type 记录了对象的类型
+#### type 记录了对象的类型
 
-`src/server.h`文件定义了`encoding`编码类型:
+`src/server.h`文件定义了`type`对象类型:
 
 ```c
 /* The actual Redis Object */
@@ -149,7 +150,7 @@ typedef struct redisObject {
 #define OBJ_HASH 4      /* Hash object. */
 ```
 
-可通过redis命令`TYPE`查看对象`key`的类型
+可通过redis`TYPE`命令查看对象`key`的`type`对象类型
 
 ```sh
 127.0.0.1:6379[1]> TYPE A
@@ -187,7 +188,6 @@ OK
 127.0.0.1:6379[1]> OBJECT ENCODING A
 "embstr"
 ```
-
 
 #### lru
 

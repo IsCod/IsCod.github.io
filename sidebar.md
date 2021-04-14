@@ -26,7 +26,7 @@
   * [MyCat](sql/mycat.md)
 * 杂项 
   * [AJAX](TO/AJAX.md)
-  * [数据架构](TO/数据架构.md)
+  * [数据切分](TO/数据切分.md)
   * [错误处理](TO/错误处理.md)
 * 哲学
   * [形而上学](Life/形而上学.md)

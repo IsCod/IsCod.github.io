@@ -12,8 +12,6 @@ message Person {
 }
 ```
 
-
-
 * 参考
     * [protobuf](https://github.com/protocolbuffers/protobuf)
     * [golang/protobuf](https://github.com/golang/protobuf)
